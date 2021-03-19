@@ -8,19 +8,22 @@ const { check, validationResult } = require('express-validator');
 app.use(bodyParser.json());
 app.use(morgan('common'));
 app.use(express.static('public'));
-app.use(cors());
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
-app.use(cors({
-  origin: (origin, callback) => {
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list of allowed origins
-      let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
-      return callback(new Error(message ), false);
-    }
-    return callback(null, true);
-  }
-}));
+// Allows all domains to make API requests
+app.use(cors());
+
+// Allows only specific sites to make API requests
+// let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'https://testsite.com'];
+// app.use(cors({
+//   origin: (origin, callback) => {
+//     if(!origin) return callback(null, true);
+//     if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list of allowed origins
+//       let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
+//       return callback(new Error(message ), false);
+//     }
+//     return callback(null, true);
+//   }
+// }));
 
 let auth = require('./auth')(app);
 require('./passport');
@@ -96,6 +99,7 @@ app.post('/users',
     check('Username', 'Username must be minimum 5 characters').isLength({min: 5}),
     check('Username', 'Username cannot contain non-alphanumeric characters').isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
+    check('Password', 'Password cannot contain non-alphanumeric characters').isAlphanumeric(),
     check('Email', 'Not a valid email address - incorrect format').isEmail(),
     check('Birthday', 'Not a valid date -- enter as YYYY-MM-DD').isDate()
   ], (req, res) => {
@@ -164,6 +168,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false}),
   check('Username', 'Username must be minimum 5 characters').isLength({min: 5}),
   check('Username', 'Username cannot contain non-alphanumeric characters').isAlphanumeric(),
   check('Password', 'Password is required').not().isEmpty(),
+  check('Password', 'Password cannot contain non-alphanumeric characters').isAlphanumeric(),
   check('Email', 'Not a valid email address - incorrect format').isEmail(),
   check('Birthday', 'Not a valid date -- enter as YYYY-MM-DD').isDate()
 ], (req, res) => { 
