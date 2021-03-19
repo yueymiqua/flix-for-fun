@@ -30,9 +30,12 @@ const Models = require('./models.js');
 // Imports the model names definied in the models.js file (they were exported at the bottom of file)
 const Movies = Models.Movie;
 const Users = Models.User;
-// Allows Mongoose to connect your database(FlixForFun) so it can perform CRUD operations on the documents
-//it contains from within your REST API
-mongoose.connect('mongodb://localhost:27017/FlixForFun', { useNewUrlParser: true, useUnifiedTopology: true})
+
+// Allows Mongoose to connect your database(FlixForFunDB) so it can perform CRUD operations on the documents it contains from within your REST API
+// FOR CONNECTING TO LOCAL HOST
+// mongoose.connect('mongodb://localhost:27017/FlixForFun', { useNewUrlParser: true, useUnifiedTopology: true})
+// FOR CONNECTING TO PaaS
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true})
 
 app.get('/', (req, res) => {
   res.send('Welcome to Flix-For-Fun!');
@@ -243,3 +246,8 @@ const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0',() => {
  console.log('Listening on Port ' + port);
 });
+
+// For listening on local port(8080)
+// app.listen(8080, () => {
+//   console.log('Your app is listening on port 8080')
+// });
