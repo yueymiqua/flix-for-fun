@@ -1,13 +1,28 @@
+const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
-const app = express();
-app.use(bodyParser.json());
+const passport = require('passport');
 const morgan = require('morgan');
+const app = express();
+const { check, validationResult } = require('express-validator');
+app.use(bodyParser.json());
 app.use(morgan('common'));
 app.use(express.static('public'));
+app.use(cors());
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list of allowed origins
+      let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
+      return callback(new Error(message ), false);
+    }
+    return callback(null, true);
+  }
+}));
 
 let auth = require('./auth')(app);
-const passport = require('passport');
 require('./passport');
 
 const mongoose = require('mongoose');
@@ -68,8 +83,26 @@ app.get('/movies/directors/:Name', passport.authenticate('jwt', { session: false
 });
 
 //Add a user (expecting a JSON format with ID: integer, Username: string, Password: string, Email: string, Birthday: date)
-app.post('/users', passport.authenticate('jwt', { session: false}), (req, res) => {
-  Users.findOne({ Username: req.body.Username })
+app.post('/users', 
+  // Using express validator to check user's input fields
+  [
+    check('Username', 'Username must be minimum 5 characters').isLength({min: 5}),
+    check('Username', 'Username cannot contain non-alphanumeric characters').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Not a valid email address - incorrect format').isEmail(),
+    check('Birthday', 'Not a valid date -- enter as YYYY-MM-DD').isDate()
+  ], (req, res) => {
+
+    // check the validator objects for errors
+    let errors = validationResult(req);
+
+    if(!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
+    // hashing the password entered from Password field
+    let hashedPassword = Users.hashPassword(req.body.Password);
+    Users.findOne({ Username: req.body.Username })
     .then((user) => {
       if (user) {
         return res.status(400).send(req.body.Username + ' already exists');
@@ -77,7 +110,7 @@ app.post('/users', passport.authenticate('jwt', { session: false}), (req, res) =
         Users
           .create({
             Username: req.body.Username,
-            Password: req.body.Password,
+            Password: hashedPassword, // Adding the hashed password to mongoDB database
             Email: req.body.Email,
             Birthday: req.body.Birthday
           })
@@ -119,11 +152,26 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false}), (re
 });
 
 // Update a user's info by Username (Expecting a JSON file with Username: string(REQUIRED), Password: string(REQUIRED), Email: string(REQUIRED, and Birthday: Date))
-app.put('/users/:Username', passport.authenticate('jwt', { session: false}), (req, res) => {
+app.put('/users/:Username', passport.authenticate('jwt', { session: false}),
+[
+  check('Username', 'Username must be minimum 5 characters').isLength({min: 5}),
+  check('Username', 'Username cannot contain non-alphanumeric characters').isAlphanumeric(),
+  check('Password', 'Password is required').not().isEmpty(),
+  check('Email', 'Not a valid email address - incorrect format').isEmail(),
+  check('Birthday', 'Not a valid date -- enter as YYYY-MM-DD').isDate()
+], (req, res) => { 
+ 
+  let errors = validationResult(req);
+
+  if(!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
+  let hashedPassword = Users.hashPassword(req.body.Password);
   Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
     {
       Username: req.body.Username,
-      Password: req.body.Password,
+      Password: hashedPassword,
       Email: req.body.Email,
       Birthday: req.body.Birthday
     }
@@ -187,33 +235,7 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false}), 
     });
 });
 
-app.listen(8080, () => {
-  console.log('This app is being listened to via port 8080');
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0',() => {
+ console.log('Listening on Port ' + port);
 });
-
-
-// let favoriteMovies = [
-//   {title: 'Momento', year: '2000', director: 'Christopher Nolan'},
-//   {title: 'Avengers Infinity War', year: '2018', director: 'Joe/Anthony Russo'},
-//   {title: 'John Wick', year: '2014', director: 'Chad Stahelski'},
-//   {title: 'The Prestige', year: '2006', director: 'Christopher Nolan'},
-//   {title: 'Hot Fuzz', year: '2007', director: 'Edgar Wright'},
-//   {title: 'Harold & Kumar Go to White Castle', year: '2004', director: 'Danny Leiner'},
-//   {title: 'Onward', year: '2020', director: 'Dan Scanlon'},
-//   {title: 'The Conjuring', year: '2013', director: 'James Wan'},
-//   {title: 'Oldboy', year: '2003', director: 'Chan-wook Park'},
-//   {title: 'The Shining', year: '1980', director: 'Stanley Kubrick'}
-// ];
-
-// app.use((err, req, res, next) => {
-//   console.error(err.stack);
-//   res.status(500).send('Oops, An Error Occurred!')
-// })
-
-// app.get('/movies', (req, res) => {
-//   res.send(favoriteMovies);
-// });
-
-// app.get('/', (req, res) => {
-//   res.send('Welcome to Flix-For-Fun - Your Online One-stop Never-ending Supply Stream of Movies!')
-// });
