@@ -34,6 +34,10 @@ const Users = Models.User;
 //it contains from within your REST API
 mongoose.connect('mongodb://localhost:27017/FlixForFun', { useNewUrlParser: true, useUnifiedTopology: true})
 
+app.get('/', (req, res) => {
+  res.send('Welcome to Flix-For-Fun!');
+})
+
 // Get all movies
 app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.find()
