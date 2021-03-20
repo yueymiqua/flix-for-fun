@@ -32,14 +32,14 @@ POST ./login - Login page of the app for existing users (user will have to enter
 GET ./movies - loads all the movie information available (in the form of an array of movie objects)
 
 GET ./movies/:title - loads all the information related to a specific movie by title (ex. entering "John Wick" will return a movie JSON object)  
-![getting-data-on-single-movie](/IMG/getting-data-on-single-movie.png)
+![getting-data-on-single-movie](/IMG/getting-data-on-single-movie.PNG)
 
 GET ./movies/genres/:Name - loads information regarding a specific genre (ex. entering "Thriller" will return description as a string)  
-![getting-a-genre-description](/IMG/getting-a-genre-description.png)
+![getting-a-genre-description](/IMG/getting-a-genre-description.PNG)
 
 GET ./movies/directors/:Name - loads all information regarding a specific director (ex. entering "Christopher Nolan" will return a director JSON object)
 
-![getting-data-on-a-director](/IMG/getting-data-on-a-director.png)  
+![getting-data-on-a-director](/IMG/getting-data-on-a-director.PNG)  
 UPDATE ./users/:Username - allows existing users to updated profile information (entering again a user object with keys of Username, Password, Email, and Birthday)
 
 POST ./users/:Username/Movies/:MovieID - allows existing users to add a movie to their Favorite-list (using the movie's MovieID)  
