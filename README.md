@@ -13,33 +13,40 @@ Ways to get the project running:
 Create a new user: Select "Body" tab, check the radio button "raw", and type in an object with the keys "Username", "Password", "Email", and "Birthday"(entered in YYYY-MM-DD). Username and Password must be alphanumeric and have 5 or more characters. After you create a user profile, change the endpoint to "https://flix-for-fun.herokuapp.com/login" and keep method as POST. Then select "Params" tab and enter the Keys "Username" and "Password" for the Query Params. Enter the Values as the Username and Password created for the user profile. You can be successfully logged in and receive a JWT (JSON Web Token).
 You can enter this JWT into the "Token" field under "Authorization" tab and change the "Type" to "Bearer Token" to reach other endpoints of this project.
 
-
-==========================
+--------------------------
 Endpoints of this project:
-==========================
 --------------------------
 No Authorization Required:
 --------------------------
 GET ./ - Main Welcome Page of the app
 ![flix-for-fun-mainpage](/IMG/flix-for-fun-mainpage.png)
+
 POST ./users - Registration page for new users (entering a user object with keys of Username, Password, Email, and Birthday)
 ![create-a-user](/IMG/create-a-user.png)
+
 POST ./login - Login page of the app for existing users (user will have to enter a Username and Password to match existing Username/Password set in database)
 ![successful-user-login](/IMG/successful-user-login.png)
-----------------------
+
 Authorization Require:
 ----------------------
 GET ./movies - loads all the movie information available (in the form of an array of movie objects)
+
 GET ./movies/:title - loads all the information related to a specific movie by title (ex. entering "John Wick" will return a movie JSON object)
 ![getting-data-on-single-movie](/IMG/getting-data-on-single-movie.png)
+
 GET ./movies/genres/:Name - loads information regarding a specific genre (ex. entering "Thriller" will return description as a string)
 ![getting-a-genre-description](/IMG/getting-a-genre-description.png)
+
 GET ./movies/directors/:Name - loads all information regarding a specific director (ex. entering "Christopher Nolan" will return a director JSON object)
+
 ![getting-data-on-a-director](/IMG/getting-data-on-a-director.png)
 UPDATE ./users/:Username - allows existing users to updated profile information (entering again a user object with keys of Username, Password, Email, and Birthday)
+
 POST ./users/:Username/Movies/:MovieID - allows existing users to add a movie to their Favorite-list (using the movie's MovieID)
 ![adding-a-movie-to-favorites](/IMG/adding-a-movie-to-favorites.png)
+
 DELETE ./users/:Username/Movies/:MovieID - allows existing users to delete a movie from their Favorite-list (using the movie's MovieID)
+
 DELETE ./users/:Username - allows existing users to delete their entire profile (by entering their Username)
 
 
