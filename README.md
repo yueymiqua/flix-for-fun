@@ -16,7 +16,7 @@ You can enter this JWT into the "Token" field under "Authorization" tab and chan
 --------------------------
 Endpoints of this project:
 --------------------------
-No Authorization Required:
+ - No Authentication/Authorization Required:
 --------------------------
 GET ./ - Main Welcome Page of the app
 ![flix-for-fun-mainpage](/IMG/flix-for-fun-mainpage.png)
@@ -27,7 +27,7 @@ POST ./users - Registration page for new users (entering a user object with keys
 POST ./login - Login page of the app for existing users (user will have to enter a Username and Password to match existing Username/Password set in database)
 ![successful-user-login](/IMG/successful-user-login.png)
 
-Authorization Require:
+ - Authentication/Authorization Required:
 ----------------------
 GET ./movies - loads all the movie information available (in the form of an array of movie objects)
 
