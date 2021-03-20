@@ -1,12 +1,12 @@
 # Flix-For-Fun
 
-Project Description:
+## Project Description:  
 The project is building the server-side component of an "online-movie" web application. This is achieved by building an API to query information from client to server (and vice-versa), as well as transfer and model data that is stored inside a NoSQL database. This web application will allow users to register so that they can explore a great selection of movies along with related directors and genres they are interested in learning more about. Registered users will be able update their
 personal information(such as username, password, email and birthday) and create a list of their favorite movies. User information will be server-side validated to meet certain input requirements which will assist with preventing malicious attacks and keeping user data safe. Passwords are hashed with bcrypt at registration and stored as encrypted files and compared with passwords entered during login(which are also hashed). Login is handle by Passport Local Strategy(Basic HTTP Authentication) and once the user is autheticated, they will be successfully logged in and be using JWT(JSON Web Token) Authentication to reach other server endpoints.
 
 
 --------------------------------
-Ways to get the project running:
+## Ways to get the project running:
 --------------------------------
 1. Visit "https://flix-for-fun.herokuapp.com/" to access the API (platform hosted by Heroku). To be interfaced with front-end application built with React.
 2. Download the project files off GitHub, then run "npm install" on your command line interface of command prompt. Then in the commmand prompt, navigate to the root folder of the project and run "node index.js". Once you receive a message saying the server is running on port 8080, launch your desktop Postman application. Open Postman and choose POST request, entering "https://flix-for-fun.herokuapp.com/users" as the endpoint. 
@@ -14,9 +14,9 @@ Create a new user: Select "Body" tab, check the radio button "raw", and type in 
 You can enter this JWT into the "Token" field under "Authorization" tab and change the "Type" to "Bearer Token" to reach other endpoints of this project.
 
 --------------------------
-Endpoints of this project:
+## Endpoints of this project:
 --------------------------
- - No Authentication/Authorization Required:  
+### No Authentication/Authorization Required:  
   
 GET ./ - Main Welcome Page of the app  
 ![flix-for-fun-mainpage](/IMG/flix-for-fun-mainpage.png)
@@ -27,7 +27,7 @@ POST ./users - Registration page for new users (entering a user object with keys
 POST ./login - Login page of the app for existing users (user will have to enter a Username and Password to match existing Username/Password set in database)  
 ![successful-user-login](/IMG/successful-user-login.png)
 
- - Authentication/Authorization Required:  
+### Authentication/Authorization Required:  
   
 GET ./movies - loads all the movie information available (in the form of an array of movie objects)
 
@@ -51,7 +51,7 @@ DELETE ./users/:Username - allows existing users to delete their entire profile 
 
 
 ---------------------
-Project Dependencies: 
+## Project Dependencies: 
 ---------------------
  - Local Dependencies:  
     "bcrypt": "^5.0.1",  
@@ -72,7 +72,7 @@ Project Dependencies:
 
 
 ---------------------------
-Which API the project uses:
+## Which API the project uses:
 --------------------------- 
  - Node.js and Express.js for server-side/backend programming
  - Data is stored in noQSL database (MongoDB)
