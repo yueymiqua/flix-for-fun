@@ -53,21 +53,21 @@ DELETE ./users/:Username - allows existing users to delete their entire profile 
 ---------------------
 Project Dependencies: 
 ---------------------
- - Local Dependencies:
-    "bcrypt": "^5.0.1",
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "express-validator": "^6.10.0",
-    "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.21",
-    "mongoose": "^5.12.0",
-    "morgan": "^1.10.0",
-    "passport": "^0.4.1",
-    "passport-jwt": "^4.0.0",
+ - Local Dependencies:  
+    "bcrypt": "^5.0.1",  
+    "body-parser": "^1.19.0",  
+    "cors": "^2.8.5",  
+    "express": "^4.17.1",  
+    "express-validator": "^6.10.0",  
+    "jsonwebtoken": "^8.5.1",  
+    "lodash": "^4.17.21",  
+    "mongoose": "^5.12.0",  
+    "morgan": "^1.10.0",  
+    "passport": "^0.4.1",  
+    "passport-jwt": "^4.0.0",  
     "passport-local": "^1.0.0"
 
- - devDependencies
+ - devDependencies  
     "eslint": "^7.21.0"
 
 
